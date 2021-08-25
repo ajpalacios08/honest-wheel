@@ -3,10 +3,13 @@ import React from 'react'
 const ReviewForm = (props) => {
     return (
         <div className="Wrapper">
-            <form className="field">
+            <form>
                 <div>Would you like to share your review with the [Car Name]?</div>
                 <div className="field">
                     <input type="text" name="title" placeholder="Review Title"/>
+                </div>
+                <div className="field">
+                    <input type="text" name="description" placeholder="Review Description"/>
                 </div>
                 <div className="field">
                     <div className="rating-container">
