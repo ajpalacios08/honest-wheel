@@ -58,7 +58,7 @@ const ReviewForm = (props) => {
     return (
         <div className="Wrapper">
             <form onSubmit={props.handleSubmit}>
-                <div>Would you like to share your review with the {props.attributes.model}?</div>
+                <div>Would you like to share your review with the {props.car.model}?</div>
                 <div className="field">
                     <input onChange={props.handleChange} value={props.review.title} type="text" name="title" placeholder="Review Title"/>
                 </div>

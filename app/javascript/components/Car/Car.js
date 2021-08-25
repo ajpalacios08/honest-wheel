@@ -25,21 +25,21 @@ const Main = styled.div`
 `
 
 const Car = (props) => {
-    const [car, setCar] = useState({})
+    
     const [review, setReview] = useState({})
-    const [loaded, setLoaded] = useState(false)
+    const [loaded, setLoaded] = useState(true)
 
-    useEffect(() => {
-        const slug = props.match.params.slug
-        const url = `/api/v1/cars/${slug}`
+    // useEffect(() => {
+    //     const slug = props.selectedCar.id
+    //     const url = `/api/v1/cars/${slug}`
 
-        axios.get(url)
-        .then(resp => {
-            setCar(resp.data)
-            setLoaded(true)
-        })
-        .catch(resp => console.log(resp))
-    }, [])
+    //     axios.get(url)
+    //     .then(resp => {
+    //         setCar(resp.data)
+    //         setLoaded(true)
+    //     })
+    //     .catch(resp => console.log(resp))
+    // }, [])
 
     const handleChange = (e) => {
         e.preventDefault()
@@ -55,12 +55,12 @@ const Car = (props) => {
         const csrfToken = document.querySelector('[name=csrf-token]').content
         axios.defaults.headers.common['X-CSRF-TOKEN'] = csrfToken
 
-        const car_id = car.data.id
-        axios.post('/api/v1/reviews', {review, car_id})
+        const car_id = props.selectedCar.id
+        axios.post('/api/v1/reviews', {review: {title: review.title, description: review.description, score: review.score, car_id: car_id, user_id: props.currentUser.id }})
         .then(resp => {
-            const included = [...car.included, resp.data]
-            setCar({...car, included})
-            setReview({title: '', description: '', score:0})
+            console.log(resp)
+            props.setSelectedCar(resp.data)
+            e.target.reset()
         })
         .catch(resp => {})
     }
@@ -79,8 +79,8 @@ const Car = (props) => {
                     <Column>
                         <Main>
                             <Header
-                            attributes={car.data.attributes}
-                            reviews={car.included}
+                            car={props.selectedCar}
+                            // reviews={props.selectedCar.included}
                             />
                             <div className="reviews"></div>
                         </Main>
@@ -90,7 +90,7 @@ const Car = (props) => {
                             handleChange={handleChange}
                             handleSubmit={handleSubmit}
                             setRating={setRating}
-                            attributes={car.data.attributes}
+                            car={props.selectedCar}
                             review={review}
                         />
                     </Column>

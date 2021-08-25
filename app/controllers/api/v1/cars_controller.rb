@@ -8,7 +8,7 @@ module Api
                 options = {}
                 options[:include] = [:reviews]
 
-                render json: CarSerializer.new(cars, options).serialized_json
+                render json: cars, include: [:reviews], methods: [:avg_score]
             end
 
             def show

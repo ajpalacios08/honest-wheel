@@ -44,12 +44,12 @@ const Car = (props) => {
     return (
         <Card>
             <СarImg>
-                <img src={props.attributes.image_url} alt={props.attributes.model}/>
+                <img src={props.car.image_url} alt={props.car.model}/>
             </СarImg>
-            <CarModel>{props.attributes.model}</CarModel>
-            <div className="car-score">{props.attributes.avg_score}</div>
-            <CarLink>
-                <Link to={`/cars/${props.attributes.slug}`}>View Cars</Link>
+            <CarModel>{props.car.model}</CarModel>
+            <div className="car-score">{props.car.avg_score}</div>
+            <CarLink onClick={() => props.setSelectedCar(props.car)}>
+                <Link to={`/cars/${props.car.slug}`}>View Cars</Link>
             </CarLink>
         </Card>
     )

@@ -25,8 +25,8 @@ const TotalOutOf = styled.div`
 `
 
 const Header = (props) => {
-    const {model, image_url, avg_score} = props.attributes
-    const total = props.reviews.length
+    const {model, image_url, avg_score} = props.car
+    const total = props.car.reviews.length
     return (
         <Wrapper>
             <h1> <img src={image_url} alt={model}/> {model} </h1>

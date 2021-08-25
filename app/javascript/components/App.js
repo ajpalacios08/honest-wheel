@@ -7,10 +7,11 @@ import LogIn from "./LogIn"
 
 const App = () => {
     const [currentUser, setCurrentUser] = useState([])
+    const [selectedCar, setSelectedCar] = useState(null)
     return (
         <Switch>
-            <Route exact path="/" component={Cars}/>
-            <Route exact path="/cars/:slug" component={Car}/>
+            <Route exact path="/" component={() => <Cars setSelectedCar={setSelectedCar}/>}/>
+            <Route exact path="/cars/:slug" component={() => <Car currentUser={currentUser} selectedCar={selectedCar} setSelectedCar={setSelectedCar}/>}/>
             <Route exact path="/signup">
                 <Auth setCurrentUser={setCurrentUser}/>
             </Route>

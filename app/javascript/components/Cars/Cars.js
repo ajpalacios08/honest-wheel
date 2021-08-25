@@ -28,21 +28,24 @@ const Grid = styled.div`
     padding: 20px;
 `
 
-const Cars = () => {
+const Cars = (props) => {
     const [cars, setCars] = useState([])
 
     useEffect(() => {
 
         axios.get('/api/v1/cars.json')
-        .then(resp => (setCars(resp.data.data)))
+        .then(resp => {
+            // console.log(resp)
+            setCars(resp.data)})
         .catch(resp => console.log(resp))
     }, [cars.length])
 
-    const grid = cars.map( item => {
+    const grid = cars.map( car => {
         return (
         <Single 
-            key={item.attributes.model}
-            attributes={item.attributes}
+            key={car.id}
+            car={car}
+            setSelectedCar={props.setSelectedCar}
         />
         )
     })

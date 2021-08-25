@@ -4,10 +4,11 @@ module Api
             protect_from_forgery with: :null_session
 
             def create
-                review = @car.reviews.new(review_params)
-
+                
+                review = Review.new(review_params)
+               
                 if review.save
-                    render json: serializer(review)
+                    render json: car, include: [:reviews], methods: [:avg_score]
                 else
                     render json: {error: review.errors.messages}, status: 422
                 end
@@ -28,7 +29,7 @@ module Api
             private
 
             def car
-                @car ||= Car.find(params[:car_id])
+                @car ||= Car.find(review_params[:car_id])
             end
             
             
