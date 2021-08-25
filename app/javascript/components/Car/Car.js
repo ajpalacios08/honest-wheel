@@ -4,6 +4,7 @@ import Header from './Header'
 import ReviewForm from './ReviewForm'
 import styled from 'styled-components'
 
+
 const Wrapper = styled.div`
     margin-left: auto;
     margin-right: auto;
@@ -40,6 +41,36 @@ const Car = (props) => {
         .catch(resp => console.log(resp))
     }, [])
 
+    const handleChange = (e) => {
+        e.preventDefault()
+
+        setReview(Object.assign({}, review, {[e.target.name]: e.target.value}))
+
+        console.log('review:', review)
+    }
+
+    const handleSubmit = (e) => {
+        e.preventDefault()
+
+        const csrfToken = document.querySelector('[name=csrf-token]').content
+        axios.defaults.headers.common['X-CSRF-TOKEN'] = csrfToken
+
+        const car_id = car.data.id
+        axios.post('/api/v1/reviews', {review, car_id})
+        .then(resp => {
+            const included = [...car.included, resp.data]
+            setCar({...car, included})
+            setReview({title: '', description: '', score:0})
+        })
+        .catch(resp => {})
+    }
+
+    const setRating = (score, e) => {
+        e.preventDefault()
+        
+        setReview({...review, score})
+    }
+
     return (
         <Wrapper>
             {
@@ -55,7 +86,13 @@ const Car = (props) => {
                         </Main>
                     </Column>
                     <Column>
-                        <ReviewForm/>
+                        <ReviewForm 
+                            handleChange={handleChange}
+                            handleSubmit={handleSubmit}
+                            setRating={setRating}
+                            attributes={car.data.attributes}
+                            review={review}
+                        />
                     </Column>
                 </Fragment>
             }
